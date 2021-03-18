@@ -1,0 +1,9 @@
+jupyter
+jupyterlab
+gpflow
+sklearn
+GPyOpt
+
+pandas
+matplotlib
+seaborn
