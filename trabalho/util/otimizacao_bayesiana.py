@@ -8,7 +8,7 @@ class Dominio():
         
         for d in self._dominio:
             d_tratado = dict(d)
-            if d['type'] == 'discrete':
+            if d['type'] == 'categorical':
                 d_tratado['domain'] = list(range(len(d['domain'])))
 
             dominio_tratado.append(d_tratado)
@@ -20,7 +20,7 @@ class Dominio():
             valores = dict(kwargs)
             
             for x_i, d_i in zip(x[0], self._dominio):
-                valor = d_i['domain'][int(x_i)] if d_i['type'] == 'discrete' else x_i
+                valor = d_i['domain'][int(x_i)] if d_i['type'] == 'categorical' else x_i
                 
                 valores[d_i['name']] = valor
 

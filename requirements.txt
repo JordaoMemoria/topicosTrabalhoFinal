@@ -7,3 +7,4 @@ GPyOpt
 pandas
 matplotlib
 seaborn
+tqdm

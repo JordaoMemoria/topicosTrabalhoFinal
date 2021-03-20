@@ -1,6 +1,7 @@
 import gpflow
 import tensorflow as tf
 from gpflow.utilities import print_summary
+import numpy as np
 
 
 class GP:
@@ -15,4 +16,5 @@ class GP:
         #print_summary(self.modelo)
 
     def predict(self, X):
-        return self.modelo.predict_f(X)
+        means, vars = self.modelo.predict_f(X)
+        return np.array(means), np.array(vars)
