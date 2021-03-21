@@ -1,5 +1,5 @@
 import numpy as np
-import utils
+from trabalho.util.phi import phi
 
 
 class RBFLinearRegression:
@@ -19,7 +19,7 @@ class RBFLinearRegression:
             self.mean_rbf = X_input.mean(axis=0) + np.array([x * 0.35 for x in X_input.mean(axis=0)])
             self.n_features = X_input.shape[1] + 1
             self.lambda_rbf = [0.1] * self.n_features
-        X = np.array([utils.phi(x, self.mean_rbf, self.lambda_rbf) for x in X_input])
+        X = np.array([phi(x, self.mean_rbf, self.lambda_rbf) for x in X_input])
         aux_1 = np.linalg.inv(np.dot(np.dot(self.S0, X.T), X) + np.identity(self.n_features) * self.sig2_error)
         aux_2 = np.dot(self.S0, X.T)
         aux_3 = Y - np.dot(X, self.m0)
@@ -28,7 +28,7 @@ class RBFLinearRegression:
         self.sig_post = self.S0 - np.dot(aux_1, aux_4)
 
     def predict(self, X):
-        X_phi = np.array([utils.phi(x, self.mean_rbf, self.lambda_rbf) for x in X])
+        X_phi = np.array([phi(x, self.mean_rbf, self.lambda_rbf) for x in X])
         y_mean = X_phi.dot(self.mu_post)
         std = []
         for x in X_phi:
