@@ -1,6 +1,8 @@
 import numpy as np
-from BayesianLinearRegression import BayesianLinearRegression
 import pandas as pd
+
+from trabalho.modelos.bayesian_linear_regression import BayesianLinearRegression
+
 
 class BayesianPolinomialLinearRegression(BayesianLinearRegression):
     
