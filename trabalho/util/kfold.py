@@ -41,3 +41,7 @@ class KFoldCrossValidation:
         y_test = self.y[y_test_index]
 
         return index, X_train, X_test, y_train, y_test
+
+
+def get_fold(k: int, n_splits: int, X, y):
+    return list(KFoldCrossValidation(X, y, n_splits).split())[k]
