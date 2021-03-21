@@ -23,7 +23,7 @@ class BayesianPolinomialLinearRegression(BayesianLinearRegression):
         for c in X_df.columns.tolist():
             columnToPol = X_df[c].astype(np.float)
 #             columnToPol = X_df[c]
-            for i in range(self.order - 1):
+            for i in range(int(self.order) - 1):
                 X_df[str(c) + str(i)] = columnToPol.apply(lambda x: pow(x,i+2))
 
         return X_df.values
