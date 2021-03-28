@@ -2,7 +2,7 @@ import numpy as np
 from trabalho.util.phi import phi
 
 
-class RBFLinearRegression:
+class BayesianRBFLinearRegression:
 
     def __init__(self, m0=None, S0=None, sig2_error=0, mean_rbf_arbitrario=None, lambda_rbf_arbitrario=None):
         self.m0 = m0
@@ -15,6 +15,9 @@ class RBFLinearRegression:
         self.mean_rbf_arbitrario = mean_rbf_arbitrario
         self.lambda_rbf_arbitrario = lambda_rbf_arbitrario
 
+    def phi(self, X):
+        return np.array([phi(x, self.mean_rbf, self.lambda_rbf) for x in X])
+        
     def fit(self, X_input, Y):
         Y = Y.flatten()
         N, D = X_input.shape
@@ -27,7 +30,7 @@ class RBFLinearRegression:
         if self.lambda_rbf is None:
             self.lambda_rbf = np.ones(n_features) * self.lambda_rbf_arbitrario
         
-        X = np.array([phi(x, self.mean_rbf, self.lambda_rbf) for x in X_input])
+        X = self.phi(X_input)
 
         if self.m0 is None:
             self.m0 = X.mean(axis=0)
@@ -42,14 +45,16 @@ class RBFLinearRegression:
         self.sig_post = self.S0 - np.dot(aux_1, aux_4)
 
     def predict(self, X):
-        X_phi = np.array([phi(x, self.mean_rbf, self.lambda_rbf) for x in X])
-        y_mean = X_phi.dot(self.mu_post)
+        X_phi = self.phi(X)
+        y_mean = X_phi @ self.mu_post
         
-        std = []
-        for x in X_phi:
-            std.append(2 * np.sqrt(x.dot(self.sig_post).dot(x.T) + self.sig2_error))
+        N, D = X.shape
+        std = np.zeros((N, 1))
+        
+        for i, x in enumerate(X_phi):
+            std[i] = 2 * np.sqrt(x @ self.sig_post @ x.T + self.sig2_error)
 
-        return y_mean, np.array(std)
+        return y_mean.reshape((-1, 1)), std
 
     def set_parameters_rbf(self, mean_rbf, lambda_rbf):
         self.mean_rbf = mean_rbf
