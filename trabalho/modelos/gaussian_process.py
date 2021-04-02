@@ -36,7 +36,7 @@ class GaussianProcess:
         train_x = train_x.to(self.device)
         train_y = torch.tensor(train_y)
         train_y = train_y.to(self.device)
-        self.model = ExactGPModel(train_x, train_y, self.likelihood, self.kernel)
+        self.model = ExactGPModel(train_x*1.0, train_y*1.0, self.likelihood, self.kernel)
         self.model.train()
         self.likelihood.train()
         self.likelihood.to(self.device)
@@ -54,8 +54,11 @@ class GaussianProcess:
                 i + 1, training_iter, loss.item(),
                 self.model.likelihood.noise.item()
             ))
-            print('lengthscale Iter: ', str(i + 1))
-            print(self.model.covar_module.base_kernel.lengthscale.tolist()[0])
+            try:
+                print('lengthscale Iter: ', str(i + 1))
+                print(self.model.covar_module.base_kernel.lengthscale.tolist()[0])
+            except:
+                pass
             self.optimizer.step()
 
     def predict(self, x_test):
@@ -65,7 +68,7 @@ class GaussianProcess:
         self.likelihood.eval()
 
         with torch.no_grad(), gpytorch.settings.fast_pred_var():
-            observed_pred = self.likelihood(self.model(x_test))
+            observed_pred = self.likelihood(self.model(x_test * 1.0))
         # means = np.array(observed_pred.mean.to("cpu").tolist())
         means = observed_pred.mean
         # vars = np.array(observed_pred.variance.to("cpu").tolist())
