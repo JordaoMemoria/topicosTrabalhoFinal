@@ -24,8 +24,7 @@ class BayesianRBFLinearRegression:
         n_features = D + 1
 
         if self.mean_rbf is None:
-            self.mean_rbf = X_input.mean(axis=0) + np.array([x * self.mean_rbf_arbitrario for x in X_input.mean(axis=0)])
-            #self.mean_rbf = X_input.mean(axis=0) + X_input.mean(axis=0) * self.mean_rbf_arbitrario
+            self.mean_rbf = X_input.mean(axis=0) + X_input.mean(axis=0) * self.mean_rbf_arbitrario
 
         if self.lambda_rbf is None:
             self.lambda_rbf = np.ones(n_features) * self.lambda_rbf_arbitrario
