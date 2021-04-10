@@ -1,4 +1,4 @@
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from scipy import stats
 
 
@@ -16,3 +16,7 @@ def nlpd(predicao_mean, predicao_std, validacao):
     predicao_std = predicao_std.copy()
     predicao_std[predicao_std < EPSILON] = EPSILON
     return -stats.norm(predicao_mean, predicao_std).logpdf(validacao).mean()
+
+
+def mape(a, b):
+    return mean_absolute_percentage_error(a, b)

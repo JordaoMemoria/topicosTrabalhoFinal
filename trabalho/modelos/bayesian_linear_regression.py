@@ -1,6 +1,4 @@
 import numpy as np
-import math as m
-import pandas as pd
 from sklearn.linear_model import BayesianRidge
 
 class BayesianLinearRegression:
